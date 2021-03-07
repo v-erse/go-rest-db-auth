@@ -2,6 +2,8 @@ Simple backend REST API with auth written in Go.
 
 ![dashboard](screenshot.png)
 
+(It shows password hash and salt only for testing purposes, to make sure everything's working)
+
 Features:
 
 -   SQLite database (ORM used: GORM)
