@@ -11,7 +11,11 @@
 }
 
 .button-primary {
-    @apply bg-indigo-500 hover:bg-indigo-700 text-indigo-100 ;
+    @apply bg-indigo-500 hover:bg-indigo-700 text-indigo-100;
+}
+
+.button-success {
+    @apply bg-green-500 hover:bg-green-700 text-green-100;
 }
 
 .button-danger {

@@ -11,6 +11,11 @@
 
         <link rel="stylesheet" href="/styles/generated.css" />
         <title>home</title>
+
+        <script
+            src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.1/dist/alpine.min.js"
+            defer
+        ></script>
     </head>
     <script>
         function sendDeleteRequest(id) {
@@ -18,6 +23,8 @@
                 method: "DELETE",
             }).then(() => location.reload());
         }
+
+        let message;
 
         function sendFormData(url, e) {
             e.preventDefault();
@@ -35,24 +42,24 @@
             })
                 .then((response) => {
                     if (response.status >= 200 && response.status < 300) {
-                        removeErrorMessage();
+                        message == "";
                     }
                     return response.json();
                 })
                 .then((data) => {
                     if (data.error) {
-                        setErrorMessage(data.error);
+                        // message = data.error;
+                        const event = new CustomEvent("signInError");
+                        dispatchEvent(event);
                     } else {
                         location.reload();
                     }
                 });
         }
 
-        function setErrorMessage(message) {
-            const ele = document.getElementById("errorMessage");
-            ele.style.display = "block";
-            ele.innerText = message;
-        }
+        // function toggleError(message) {
+        //     return (message = message);
+        // }
 
         function removeErrorMessage() {
             const ele = document.getElementById("errorMessage");
@@ -60,29 +67,12 @@
             ele.innerText = "";
         }
     </script>
-    <style>
-        /* table {
-            border-spacing: 20px;
-        }
-
-        td {
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            max-width: 1px;
-        } */
-
-        #errorMessage {
-            display: none;
-            color: red;
-        }
-    </style>
-    <body>
-        <div class="max-w-4xl mx-auto p-10">
+    <body class="bg-gray-100">
+        <div class="max-w-4xl mx-auto p-10 my-10 rounded-xl bg-white shadow-lg">
             {{ if .currentUser.Username}}
             <div
                 id="currentlyLoggedIn"
-                class="flex justify-between bg-indigo-100 text-indigo-700 p-5 rounded-lg items-center mb-8"
+                class="flex justify-between bg-green-100 text-green-700 p-5 rounded-lg items-center mb-8"
             >
                 <div>
                     Currently signed in as
@@ -90,7 +80,11 @@
                 </div>
 
                 <form id="signOut" onsubmit="sendFormData('/logout', event)">
-                    <input class="button button-primary" type="submit" value="Sign Out" />
+                    <input
+                        class="button button-success"
+                        type="submit"
+                        value="Sign Out"
+                    />
                 </form>
             </div>
             {{ else }}
@@ -125,7 +119,11 @@
                         value=""
                         placeholder="password"
                     />
-                    <input class="button button-primary" type="submit" value="Sign Up" />
+                    <input
+                        class="button button-primary"
+                        type="submit"
+                        value="Sign Up"
+                    />
                 </form>
                 <form onsubmit="sendFormData('/login', event)">
                     <input
@@ -142,14 +140,22 @@
                         value=""
                         placeholder="password"
                     />
-                    <input class="button button-primary" type="submit" value="Sign In" />
+                    <input
+                        class="button button-primary"
+                        type="submit"
+                        value="Sign In"
+                    />
                 </form>
             </div>
 
-            <p
-                class="bg-red-100 text-red-700 rounded-lg mt-8 p-5"
-                id="errorMessage"
-            ></p>
+            <div x-data="{ open: false }">
+                <p
+                    x-on:signInError="open = true"
+                    x-show="open"
+                    class="bg-red-100 text-red-700 rounded-lg mt-8 p-5"
+                    id="errorMessage"
+                ></p>
+            </div>
 
             <table
                 class="table-fixed border border-gray-200 border-collapse mt-8 w-full"
@@ -169,7 +175,7 @@
                     <td>{{ .Email }}</td>
                     <td>{{ .Password }}</td>
                     <td>{{ .Salt }}</td>
-                    <td>
+                    <td class="text-center">
                         <button
                             class="button button-danger"
                             onclick="sendDeleteRequest({{ .Model.ID }})"
