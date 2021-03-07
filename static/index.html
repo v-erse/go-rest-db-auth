@@ -90,7 +90,7 @@
                 </div>
 
                 <form id="signOut" onsubmit="sendFormData('/logout', event)">
-                    <input class="button" type="submit" value="Sign Out" />
+                    <input class="button button-primary" type="submit" value="Sign Out" />
                 </form>
             </div>
             {{ else }}
@@ -125,7 +125,7 @@
                         value=""
                         placeholder="password"
                     />
-                    <input class="button" type="submit" value="Sign Up" />
+                    <input class="button button-primary" type="submit" value="Sign Up" />
                 </form>
                 <form onsubmit="sendFormData('/login', event)">
                     <input
@@ -142,7 +142,7 @@
                         value=""
                         placeholder="password"
                     />
-                    <input class="button" type="submit" value="Sign In" />
+                    <input class="button button-primary" type="submit" value="Sign In" />
                 </form>
             </div>
 
@@ -171,10 +171,10 @@
                     <td>{{ .Salt }}</td>
                     <td>
                         <button
-                            class="btn btn-danger"
+                            class="button button-danger"
                             onclick="sendDeleteRequest({{ .Model.ID }})"
                         >
-                            DELETE
+                            Delete
                         </button>
                     </td>
                 </tr>

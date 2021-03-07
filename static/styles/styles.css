@@ -7,7 +7,15 @@
 }
 
 .button {
-    @apply bg-indigo-500 py-3 px-6 rounded-lg text-indigo-100 cursor-pointer hover:bg-indigo-700;
+    @apply py-3 px-6 rounded-lg cursor-pointer;
+}
+
+.button-primary {
+    @apply bg-indigo-500 hover:bg-indigo-700 text-indigo-100 ;
+}
+
+.button-danger {
+    @apply bg-red-500 hover:bg-red-700 text-red-100;
 }
 
 td,
