@@ -18,3 +18,10 @@ Libraries/packages used:
 -   Session middleware: [Gorilla Sessions](https://github.com/gorilla/sessions)
 -   CSS Framework: [Tailwind](https://tailwindcss.com/)
 -   JS Framework: [Alpine](https://github.com/alpinejs/alpine)
+
+
+How to use:
+- clone
+- `npm install` 
+- `npm run build` to generate css with Tailwind and Postcss
+- `cd src` and `go run .` to start server
