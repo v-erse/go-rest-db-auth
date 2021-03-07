@@ -217,7 +217,8 @@ func main() {
 	rh := newRouteHandler()
 
 	r := gin.Default()
-	r.LoadHTMLGlob("../templates/*")
+	r.Static("/styles/", "../static/styles")
+	r.LoadHTMLGlob("../static/*.html")
 
 	r.GET("/", func(c *gin.Context) {
 		c.Redirect(http.StatusPermanentRedirect, "/users")

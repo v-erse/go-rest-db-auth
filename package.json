@@ -1,0 +1,29 @@
+{
+    "name": "go-rest-db-auth",
+    "version": "1.0.0",
+    "description": "Simple backend REST API with auth written in Go.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "cross-env NODE_ENV=production postcss ./static/styles/styles.css -o ./static/styles/generated.css",
+        "dev": "postcss ./static/styles/styles.css -o ./static/styles/generated.css --watch"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/a6h-s/go-rest-db-auth.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/a6h-s/go-rest-db-auth/issues"
+    },
+    "homepage": "https://github.com/a6h-s/go-rest-db-auth#readme",
+    "devDependencies": {
+        "autoprefixer": "^10.2.5",
+        "cross-env": "^7.0.3",
+        "postcss": "^8.2.7",
+        "postcss-cli": "^8.3.1",
+        "tailwindcss": "^2.0.3"
+    }
+}
