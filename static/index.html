@@ -6,11 +6,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link
             rel="icon"
-            href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>"
+            href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👥</text></svg>"
         />
 
         <link rel="stylesheet" href="/styles/generated.css" />
-        <title>home</title>
+        <title>Users Dashboard</title>
 
         <script
             src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.1/dist/alpine.min.js"
@@ -24,47 +24,36 @@
             }).then(() => location.reload());
         }
 
-        let message;
+        function formData() {
+            return {
+                errorMessage: "",
 
-        function sendFormData(url, e) {
-            e.preventDefault();
-            const reqBody = {};
-            const fields = e.srcElement.elements;
-            for (let x of fields) {
-                if (x.type != "submit") {
-                    reqBody[x.name] = x.value;
-                }
-            }
-
-            fetch(url, {
-                method: "POST",
-                body: JSON.stringify(reqBody),
-            })
-                .then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        message == "";
+                sendFormData(url, e) {
+                    e.preventDefault();
+                    const reqBody = {};
+                    const fields = e.srcElement.elements;
+                    for (let x of fields) {
+                        if (x.type != "submit") {
+                            reqBody[x.name] = x.value;
+                        }
                     }
-                    return response.json();
-                })
-                .then((data) => {
-                    if (data.error) {
-                        // message = data.error;
-                        const event = new CustomEvent("signInError");
-                        dispatchEvent(event);
-                    } else {
-                        location.reload();
-                    }
-                });
-        }
 
-        // function toggleError(message) {
-        //     return (message = message);
-        // }
-
-        function removeErrorMessage() {
-            const ele = document.getElementById("errorMessage");
-            ele.style.display = "none";
-            ele.innerText = "";
+                    fetch(url, {
+                        method: "POST",
+                        body: JSON.stringify(reqBody),
+                    })
+                        .then((response) => {
+                            return response.json();
+                        })
+                        .then((data) => {
+                            if (data.error) {
+                                this.errorMessage = data.error;
+                            } else {
+                                location.reload();
+                            }
+                        });
+                },
+            };
         }
     </script>
     <body class="bg-gray-100">
@@ -79,7 +68,11 @@
                     <strong>{{ .currentUser.Username }}</strong>
                 </div>
 
-                <form id="signOut" onsubmit="sendFormData('/logout', event)">
+                <form
+                    id="signOut"
+                    x-data="formData()"
+                    @submit="sendFormData('/logout', event)"
+                >
                     <input
                         class="button button-success"
                         type="submit"
@@ -96,62 +89,62 @@
             </div>
             {{ end }}
 
-            <div class="grid grid-cols-2 gap-4">
-                <form onsubmit="sendFormData('/signup', event)">
-                    <input
-                        class="textField"
-                        type="text"
-                        name="username"
-                        value=""
-                        placeholder="username"
-                    />
-                    <input
-                        class="textField"
-                        type="text"
-                        name="email"
-                        value=""
-                        placeholder="joe@gmail.com"
-                    />
-                    <input
-                        class="textField"
-                        type="password"
-                        name="password"
-                        value=""
-                        placeholder="password"
-                    />
-                    <input
-                        class="button button-primary"
-                        type="submit"
-                        value="Sign Up"
-                    />
-                </form>
-                <form onsubmit="sendFormData('/login', event)">
-                    <input
-                        class="textField"
-                        type="text"
-                        name="email"
-                        value=""
-                        placeholder="joe@gmail.com"
-                    />
-                    <input
-                        class="textField"
-                        type="password"
-                        name="password"
-                        value=""
-                        placeholder="password"
-                    />
-                    <input
-                        class="button button-primary"
-                        type="submit"
-                        value="Sign In"
-                    />
-                </form>
-            </div>
+            <div x-data="formData()">
+                <div class="grid grid-cols-2 gap-4">
+                    <form @submit="sendFormData('/signup', event)">
+                        <input
+                            class="textField"
+                            type="text"
+                            name="username"
+                            value=""
+                            placeholder="username"
+                        />
+                        <input
+                            class="textField"
+                            type="text"
+                            name="email"
+                            value=""
+                            placeholder="joe@gmail.com"
+                        />
+                        <input
+                            class="textField"
+                            type="password"
+                            name="password"
+                            value=""
+                            placeholder="password"
+                        />
+                        <input
+                            class="button button-primary"
+                            type="submit"
+                            value="Sign Up"
+                        />
+                    </form>
+                    <form @submit="sendFormData('/login', event)">
+                        <input
+                            class="textField"
+                            type="text"
+                            name="email"
+                            value=""
+                            placeholder="joe@gmail.com"
+                        />
+                        <input
+                            class="textField"
+                            type="password"
+                            name="password"
+                            value=""
+                            placeholder="password"
+                        />
+                        <input
+                            class="button button-primary"
+                            type="submit"
+                            value="Sign In"
+                        />
+                    </form>
+                </div>
 
-            <div x-data="{ open: false }">
                 <p
-                    x-on:signInError="open = true"
-                    x-show="open"
+                    x-show="errorMessage"
+                    x-text="errorMessage"
                     class="bg-red-100 text-red-700 rounded-lg mt-8 p-5"
                     id="errorMessage"
                 ></p>
